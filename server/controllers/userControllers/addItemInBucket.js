@@ -33,11 +33,12 @@ const addItemInBucket = async (request, reply) => {
         .send({ message: 'Корзина не найдена' });
     }
 
-    await db('items').insert({
-      cart_id: cart.id,
-      groceires_id: id,
-      count,
-    });
+    await db('items')
+      .insert({
+        cart_id: cart.id,
+        groceires_id: id,
+        count,
+      });
 
     return reply.code(200);
   } catch (e) {

@@ -3,6 +3,9 @@ exports.up = (knex) =>
     table
       .increments('id');
     table
+      .string('messageText')
+      .notNullable();
+    table
       .integer('user_id')
       .notNullable()
       .unsigned()

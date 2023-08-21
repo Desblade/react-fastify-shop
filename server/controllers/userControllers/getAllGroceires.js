@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { logger } = require('../../logger');
 const { db } = require('../../db');
+const { convertPriceItems } = require('../../utils/convertPriceItems');
 
 const getAllGroceires = async (request, reply) => {
   try {
@@ -20,11 +21,9 @@ const getAllGroceires = async (request, reply) => {
         .send({ message: 'Не удалось найти товары' });
     }
 
-    allGroceires.forEach((groceier) => {
-      groceier.price = (groceier.price / RUB).toFixed(2);
-    });
+    const convertedAllGroceires = await convertPriceItems(allGroceires, RUB);
 
-    return reply.send(allGroceires);
+    return reply.send(convertedAllGroceires);
   } catch (e) {
     logger.error(e.message);
 

@@ -24,12 +24,10 @@ const confirmMailController = async (request, reply) => {
         .send({ message: 'Пользователь с такой почтой уже существует' });
     }
 
-    const confirmCode = generateConfirmationCode();
-    global
-      .cache
-      .set(email, confirmCode, process.env.TIMELIFECACHE);
+    const confirmCode = await generateConfirmationCode();
+    global.cache.set(email, confirmCode, process.env.TIMELIFECACHE);
 
-    const { transporter, mailOptions } = createNodemailerConfig(email, confirmCode);
+    const { transporter, mailOptions } = await createNodemailerConfig(email, confirmCode);
     await transporter.sendMail(mailOptions);
 
     return reply

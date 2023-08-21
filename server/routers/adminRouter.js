@@ -5,12 +5,14 @@ const { updateItemController } = require('../controllers/adminControllers/update
 const { deleteItemController } = require('../controllers/adminControllers/deleteItemController');
 const { checkAdminRole } = require('../middlewares/checkAdminRole');
 const { upload } = require('../middlewares/uploadMedia');
+const { getAllChats } = require('../controllers/adminControllers/getAllChats');
 
 const adminRouter = async (instance) => {
   instance
     .addHook('preHandler', checkUserToken, checkAdminRole)
     .register(multipart)
     .post('/', { preHandler: [upload.single('file')] }, addItemController)
+    .get('/', getAllChats)
     .patch('/', updateItemController)
     .delete('/', deleteItemController);
 };

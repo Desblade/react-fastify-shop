@@ -16,6 +16,7 @@ import jwtDecode from 'jwt-decode';
 class UserStore {
   constructor() {
     this._user = {};
+    this._users = [];
     this._isAuth = false;
     this._path = null;
 
@@ -24,6 +25,10 @@ class UserStore {
 
   setUser(user) {
     this._user = user;
+  }
+
+  setUsers(user) {
+    this._users = [...this._users, user];
   }
 
   setPath(path) {
@@ -40,6 +45,7 @@ class UserStore {
 
       this.setUser(data);
       this.setIsAuth(true);
+      this.setUsers(data);
     } catch (err) {
       throw { e: err.response.data.message };
     }
@@ -132,10 +138,12 @@ class UserStore {
 
     this.setIsAuth(true);
     this.setUser(user);
+    this.setUsers(user);
   }
 
   logout() {
     this.setUser({});
+    this._users = [];
     this.setIsAuth(false);
     this.setPath(null);
   }
@@ -150,6 +158,10 @@ class UserStore {
 
   get path() {
     return this._path;
+  }
+
+  get users() {
+    return this._users;
   }
 }
 

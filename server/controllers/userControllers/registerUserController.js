@@ -52,6 +52,10 @@ const registerUserController = async (request, reply) => {
         user_id: user.id,
       });
 
+      await trx('chats').insert({
+        user_id: user.id,
+      });
+
       return user;
     });
 

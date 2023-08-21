@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const { logger } = require('../../logger');
 const { db } = require('../../db');
 const { createToken } = require('../../utils/createToken');
-const { generatePassword } = require('../../utils/generateRandomPassword');
+const { generateRandomPassword } = require('../../utils/generateRandomPassword');
 
 const secondStepGoogleAuth = async (request, reply) => {
   const { code } = request.query;
@@ -41,15 +41,15 @@ const secondStepGoogleAuth = async (request, reply) => {
       return reply.redirect(`${clientUrl}/?token=${token}`);
     }
 
-    const [newUser] = await db.transaction(async (trx) => {
-      const newPassword = generatePassword();
+    const newUser = await db.transaction(async (trx) => {
+      const newPassword = await generateRandomPassword(8);
       const newHashPassword = await bcrypt.hash(newPassword, 5);
 
       const [newRegisterUser] = await trx('users')
         .insert({
           email: data.email,
           role: 'user',
-          name: data.given_name,
+          name: data.name,
           password: newHashPassword,
         })
         .returning(['id', 'email']);
@@ -77,7 +77,7 @@ const secondStepGoogleAuth = async (request, reply) => {
   } catch (e) {
     logger.error(e.message);
 
-    return reply.redirect(`${clientUrl}/login`);
+    return reply.redirect(`${clientUrl}/register`);
   }
 };
 

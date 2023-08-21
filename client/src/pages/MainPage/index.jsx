@@ -3,8 +3,9 @@ import { Box, CircularProgress } from '@mui/material';
 import { Context } from '../../index';
 import { CardList } from './Components/CardList';
 import styles from './index.module.scss';
+import { observer } from 'mobx-react-lite';
 
-const MainPage = () => {
+const MainPage = observer(() => {
   const { adminStore, userStore } = useContext(Context);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -14,6 +15,7 @@ const MainPage = () => {
 
     if (token) {
       localStorage.setItem('token', token);
+
       userStore.secondStepGoogleAuth(token);
 
       tokenParams.delete('token');
@@ -26,7 +28,10 @@ const MainPage = () => {
     const getData = async () => {
       try {
         await adminStore.getGroceires();
-      } catch (e) {} finally {
+      } catch (e) {
+
+      }
+      finally {
         setIsLoading(false);
       }
     }
@@ -38,14 +43,14 @@ const MainPage = () => {
     <Box className={styles.container}>
       {
         isLoading &&
-            <div className={styles.containerLoader}>
-              <CircularProgress color={'success'} />
-            </div>
+        <div className={styles.containerLoader}>
+          <CircularProgress color={'success'} />
+        </div>
       }
       { !isLoading && <CardList /> }
     </Box>
   );
-}
+})
 
 export {
   MainPage,

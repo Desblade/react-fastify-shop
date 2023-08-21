@@ -13,7 +13,7 @@ const uploadFunc = (folder) => {
 };
 
 const storage = uploadFunc('uploads/itemsImages/');
-const storageAvatars = uploadFunc('uploads/itemsAvatars/');
+const storageAvatars = uploadFunc('uploads/usersAvatars/');
 
 const upload = multer({ storage });
 const uploadAvatars = multer({ storage: storageAvatars });

@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { Box, Button, AppBar, Toolbar, Typography, ButtonGroup } from '@mui/material';
+import { Box, Button, AppBar, Toolbar, Typography, ButtonGroup, Badge } from '@mui/material';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import { Context } from '../../index';
-import { ADMIN_PAGE, CHAT_PAGE_ADMIN, LOGIN_PAGE } from '../../utils/consts';
+import { ADMIN_PAGE, CHAT_PAGE, CHAT_PAGE_ADMIN, LOGIN_PAGE } from '../../utils/consts';
 import { AvatarWithMenu } from './Components/AvatarWithMenu';
 import styles from './index.module.scss';
 
@@ -56,6 +57,16 @@ const MenuAppBar = observer(() => {
                   Чат с клиентами</Button>
               </ButtonGroup>
             )}
+            {
+              (userStore.isAuth && userStore.user.role !== 'admin') && (
+                <Badge badgeContent={4} color={'success'}>
+                  <ChatBubbleIcon
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => navigate(CHAT_PAGE)}
+                  />
+                </Badge>
+              )
+            }
             {userStore.isAuth ? (
               <AvatarWithMenu
                 setAnchorEl={setAnchorEl}

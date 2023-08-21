@@ -1,13 +1,18 @@
 import { makeAutoObservable } from 'mobx';
-import { addGroceierAPI } from '../utils/http/adminAPI';
+import { addGroceierAPI, getChatsAPI } from '../utils/http/adminAPI';
 import { getGroceiresAPI } from '../utils/http/userAPI';
 
 // bad decomposition, refactor later (another god's object)
 class AdminStore {
   constructor() {
     this._groceires = [];
+    this._chats = [];
 
     makeAutoObservable(this);
+  }
+
+  setChat(chat) {
+    this._chats = [...this._chats, chat];
   }
 
   setGroceier(groceier) {
@@ -29,12 +34,27 @@ class AdminStore {
     try {
       this._groceires = await getGroceiresAPI();
     } catch (err) {
-      throw {e: err.response.data.message};
+      throw { e: err.response.data.message };
     }
+  }
+
+  async getChats() {
+    try {
+      const chats = await getChatsAPI();
+
+      this._chats = chats;
+    } catch (err) {
+      throw { e: err.response.data.message };
+    }
+
   }
 
   get groceiers() {
     return this._groceires;
+  }
+
+  get chats() {
+    return this._chats;
   }
 }
 
