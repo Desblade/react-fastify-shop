@@ -1,0 +1,10 @@
+.buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  .activeButton:focus {
+    color: #fff;
+    background: #3498db;
+  }
+}

@@ -1,0 +1,18 @@
+.form {
+  width: 50%;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.loaderContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
