@@ -5,7 +5,7 @@ import {
   checkTokenAPI,
   confirmMailAPI,
   firstStepGoogleAuthAPI,
-  getAvatarAPI,
+  getAvatarAPI, getCountOfMessagesAPI,
   getOneAPI,
   loginAPI,
   registerAPI
@@ -139,6 +139,16 @@ class UserStore {
     this.setIsAuth(true);
     this.setUser(user);
     this.setUsers(user);
+  }
+
+  async getCountOfMessages() {
+    try {
+      const countMessages = await getCountOfMessagesAPI();
+
+      return countMessages;
+    } catch (err) {
+      throw { e: err.response.data.message };
+    }
   }
 
   logout() {

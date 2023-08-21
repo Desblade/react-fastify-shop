@@ -5,6 +5,7 @@ import { StyledEngineProvider } from '@mui/material';
 import { App } from './App';
 import { UserStore } from './stores/UserStore';
 import { AdminStore } from './stores/AdminStore';
+import { ChatStore } from './stores/ChatStore';
 import './index.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -19,6 +20,7 @@ root.render(
     <Context.Provider value={{
 			userStore: new UserStore(),
       adminStore: new AdminStore(),
+      chatStore: new ChatStore(),
     }}
     >
       <BrowserRouter>

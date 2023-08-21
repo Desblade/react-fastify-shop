@@ -12,6 +12,8 @@ const checkUserToken = async (request, reply) => {
         id: user.id,
         email: user.email,
         role: user.role,
+        chatId: user.chatId,
+        name: user.name,
       };
 
       return;

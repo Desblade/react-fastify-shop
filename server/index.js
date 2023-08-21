@@ -53,14 +53,16 @@ app.ready((err) => {
       socket.join(roomName);
 
       const allMessages = await getAllMessages(chatId);
+      const jsonAllMessages = JSON.stringify(allMessages);
 
-      app.io.to(roomName).emit('allMessages', allMessages);
+      app.io.to(roomName).emit('allMessages', jsonAllMessages);
     });
 
-    socket.on('message', async (data) => {
+    socket.on('message', async (dataJson) => {
+      const data = JSON.parse(dataJson);
       await sendMessage(data.messageText, data.chatId, data.userId);
 
-      app.io.to(data.roomName).emit('message', data);
+      app.io.to(data.roomName).emit('message', dataJson);
     });
 
     socket.on('disconnect', () => {

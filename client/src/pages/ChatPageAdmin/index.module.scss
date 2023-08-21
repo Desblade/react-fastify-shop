@@ -1,4 +1,38 @@
 .container {
   width: 90vw;
-  height: 100vh;
+  min-height: 100vh;
+
+  .wrapper {
+    height: 100%;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .chat {
+      width: 70%;
+      height: 30%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .chat__header {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .chat__email {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+    }
+    .chat__footer {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+  }
 }

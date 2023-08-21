@@ -6,13 +6,8 @@ import { getGroceiresAPI } from '../utils/http/userAPI';
 class AdminStore {
   constructor() {
     this._groceires = [];
-    this._chats = [];
 
     makeAutoObservable(this);
-  }
-
-  setChat(chat) {
-    this._chats = [...this._chats, chat];
   }
 
   setGroceier(groceier) {
@@ -38,23 +33,8 @@ class AdminStore {
     }
   }
 
-  async getChats() {
-    try {
-      const chats = await getChatsAPI();
-
-      this._chats = chats;
-    } catch (err) {
-      throw { e: err.response.data.message };
-    }
-
-  }
-
   get groceiers() {
     return this._groceires;
-  }
-
-  get chats() {
-    return this._chats;
   }
 }
 

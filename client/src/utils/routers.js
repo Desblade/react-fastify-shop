@@ -44,6 +44,10 @@ export const adminRouters = [
     path: CHAT_PAGE_ADMIN,
     Component: ChatPageAdmin,
   },
+  {
+    path: CHAT_PAGE,
+    Component: ChatPage,
+  },
 ];
 
 export const authRouters = [

@@ -7,9 +7,10 @@ const loginUserController = async (request, reply) => {
   try {
     const { email, password } = request.body;
 
-    const [user] = await db('users')
-      .select(['id', 'email', 'password', 'role'])
-      .where({ email })
+    const [user] = await db('users as u')
+      .leftJoin('chats as c', 'c.user_id', 'u.id')
+      .where('u.email', email)
+      .select(['u.id', 'u.email', 'u.password', 'u.role', 'c.id as chatId', 'u.name'])
       .limit(1);
 
     if (!user) {
@@ -30,6 +31,8 @@ const loginUserController = async (request, reply) => {
       id: user.id,
       email: user.email,
       role: user.role,
+      chatId: user.chatId,
+      name: user.name
     });
 
     return reply.send({ token });

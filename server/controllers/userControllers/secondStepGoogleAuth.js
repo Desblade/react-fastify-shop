@@ -26,9 +26,10 @@ const secondStepGoogleAuth = async (request, reply) => {
       },
     });
 
-    const [user] = await db('users')
-      .select(['id', 'email'])
-      .where({ email: data.email })
+    const [user] = await db('users as u')
+      .leftJoin('chats as c', 'c.user_id', 'u.id')
+      .select(['u.id', 'u.email', 'c.id as chatId', 'u.name'])
+      .where('u.email', data.email)
       .limit(1);
 
     if (user) {
@@ -36,12 +37,14 @@ const secondStepGoogleAuth = async (request, reply) => {
         id: user.id,
         email: user.email,
         role: 'user',
+        chatId: user.chatId,
+        name: user.name,
       });
 
       return reply.redirect(`${clientUrl}/?token=${token}`);
     }
 
-    const newUser = await db.transaction(async (trx) => {
+    const newUserWithChat = await db.transaction(async (trx) => {
       const newPassword = await generateRandomPassword(8);
       const newHashPassword = await bcrypt.hash(newPassword, 5);
 
@@ -52,25 +55,31 @@ const secondStepGoogleAuth = async (request, reply) => {
           name: data.name,
           password: newHashPassword,
         })
-        .returning(['id', 'email']);
+        .returning(['id', 'email', 'name']);
 
       await trx('carts')
         .insert({
           user_id: newRegisterUser.id,
         });
 
-      await trx('chats')
+      const [chat] = await trx('chats')
         .insert({
           user_id: newRegisterUser.id,
-        });
+        })
+        .returning('id');
 
-      return newRegisterUser;
+      return {
+        newRegisterUser,
+        chat,
+      };
     });
 
     const token = await createToken({
-      id: newUser.id,
-      email: newUser.email,
+      id: newUserWithChat.newRegisterUser.id,
+      email: newUserWithChat.newRegisterUser.email,
       role: 'user',
+      chatId: newUserWithChat.chat.id,
+      name: newUserWithChat.newRegisterUser.name,
     });
 
     return reply.redirect(`${clientUrl}/?token=${token}`);

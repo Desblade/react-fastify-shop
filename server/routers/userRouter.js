@@ -15,6 +15,7 @@ const { confirmMailController } = require('../controllers/userControllers/confir
 const { registerSchema, loginSchema } = require('../schemas/registerSchema');
 const { firstStepGoogleAuth } = require('../controllers/userControllers/firstStepGoogleAuth');
 const { secondStepGoogleAuth } = require('../controllers/userControllers/secondStepGoogleAuth');
+const { getCountOfMessages } = require('../controllers/userControllers/getCountOfMessages');
 
 const userRouter = async (instance) => {
   instance
@@ -23,6 +24,7 @@ const userRouter = async (instance) => {
     .get('/getAll', getAllGroceires)
     .get('/getItems', { preHandler: [checkUserToken] }, getAllItems)
     .get('/getItem/:id', getOneGroceier)
+    .get('/getCountMessages', { preHandler: [checkUserToken] }, getCountOfMessages)
     .get('/getAvatar', { preHandler: [checkUserToken] }, getAvatarForUser)
     .get('/google/auth', firstStepGoogleAuth)
     .get('/google/auth/callback', secondStepGoogleAuth)

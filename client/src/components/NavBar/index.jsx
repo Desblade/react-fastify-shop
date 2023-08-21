@@ -10,7 +10,9 @@ import styles from './index.module.scss';
 
 const MenuAppBar = observer(() => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { userStore } = useContext(Context);
+  const [countOfMessages, setCountOfMessages] = useState(0);
+  const { userStore, chatStore } = useContext(Context);
+  const { chatId } = userStore.user;
   const navigate = useNavigate();
   const pathLocalStorage = localStorage.getItem('pathAvatar');
 
@@ -18,6 +20,9 @@ const MenuAppBar = observer(() => {
     const fetchData = async () => {
       try {
         await userStore.getAvatar();
+        /*const data = await userStore.getCountOfMessages();*/
+
+        setCountOfMessages(data);
       } catch (e) {
         // Handle error
       }
@@ -28,7 +33,7 @@ const MenuAppBar = observer(() => {
     } else {
       userStore.setPath(pathLocalStorage);
     }
-  }, [userStore.path]);
+  }, [userStore.path, chatStore.receivedMessages.length]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -59,10 +64,10 @@ const MenuAppBar = observer(() => {
             )}
             {
               (userStore.isAuth && userStore.user.role !== 'admin') && (
-                <Badge badgeContent={4} color={'success'}>
+                <Badge badgeContent={countOfMessages} color={'success'}>
                   <ChatBubbleIcon
                     sx={{ cursor: 'pointer' }}
-                    onClick={() => navigate(CHAT_PAGE)}
+                    onClick={() => navigate(`/chatPageAdmin/chat/${chatId}`)}
                   />
                 </Badge>
               )

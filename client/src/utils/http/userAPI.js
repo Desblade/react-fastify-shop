@@ -65,4 +65,10 @@ export const firstStepGoogleAuthAPI = async () => {
   const { data } = await $host.get('/user/google/auth');
 
   return data;
+};
+
+export const getCountOfMessagesAPI = async () => {
+  const { data } = await $host.get('/user/getCountMessages');
+
+  return data;
 }

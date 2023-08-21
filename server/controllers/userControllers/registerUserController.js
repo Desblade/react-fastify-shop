@@ -38,7 +38,7 @@ const registerUserController = async (request, reply) => {
 
     const hashPassword = await bcrypt.hash(password, 5);
 
-    const registerUser = await db.transaction(async (trx) => {
+    const registerUserWithChat = await db.transaction(async (trx) => {
       const [user] = await trx('users')
         .insert({
           email,
@@ -46,23 +46,30 @@ const registerUserController = async (request, reply) => {
           role: 'user',
           name,
         })
-        .returning(['id', 'email', 'role']);
+        .returning(['id', 'email', 'role', 'name']);
 
       await trx('carts').insert({
         user_id: user.id,
       });
 
-      await trx('chats').insert({
-        user_id: user.id,
-      });
+      const [chat] = await trx('chats')
+        .insert({
+          user_id: user.id,
+        })
+        .returning('id');
 
-      return user;
+      return {
+        user,
+        chat,
+      };
     });
 
     const token = await createToken({
-      id: registerUser.id,
-      email: registerUser.email,
-      role: registerUser.role,
+      id: registerUserWithChat.user.id,
+      email: registerUserWithChat.user.email,
+      role: registerUserWithChat.user.role,
+      chatId: registerUserWithChat.chat.id,
+      name: registerUserWithChat.user.name,
     });
 
     return reply.send({ token });

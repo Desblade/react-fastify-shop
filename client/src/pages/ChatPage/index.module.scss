@@ -1,0 +1,52 @@
+.container {
+  width: 95vw;
+  max-width: 95vw;
+  height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .card {
+    width: 70%;
+    height: 90%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .messages {
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      gap: 15px;
+
+      .message {
+        width: 40%;
+        padding: 15px;
+        background: #007aff;
+        color: white;
+        border-radius: 15px;
+
+        .message__text {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+
+          .message__avatar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          }
+        }
+      }
+    }
+
+    .card__footer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+  }
+}

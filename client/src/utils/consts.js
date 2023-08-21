@@ -14,4 +14,4 @@ export const PROFILE_PAGE = '/profile'
 
 export const CHAT_PAGE_ADMIN = '/chatPageAdmin';
 
-export const CHAT_PAGE = '/chatPageUser';
+export const CHAT_PAGE = '/chatPageAdmin/chat/:chatId';
