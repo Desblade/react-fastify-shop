@@ -1,0 +1,83 @@
+.container {
+  max-width: 90vw;
+  width: 90vw;
+  height: 100vh;
+  min-height: 100vh;
+
+  .containerLoader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+
+  .wrapper {
+    margin: 20px 0 0 20px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    .noItems {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      align-items: center;
+
+      .noItems__text {
+        text-align: center;
+      }
+    }
+
+    .item {
+      width: 60%;
+      height: 40%;
+      min-height: 40%;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+
+      .container__info {
+        display: flex;
+        width: 80%;
+        height: 100%;
+        gap: 20px;
+
+        .text {
+          width: 100%;
+        }
+      }
+
+      .priceInfo__container {
+        width: 25%;
+        display: flex;
+        height: 100%;
+        align-items: flex-end;
+        justify-content: flex-end;
+
+        .priceInfo {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          .cart {
+            font-size: 20px;
+          }
+
+          .costButton {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            .cost {
+              font-size: 20px;
+              color: green;
+            }
+          }
+        }
+      }
+    }
+  }
+}

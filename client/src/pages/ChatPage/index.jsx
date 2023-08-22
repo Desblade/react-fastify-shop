@@ -88,8 +88,8 @@ const ChatPage = observer(() => {
         >
           <Box className={styles.messages}>
             {
-                chatStore.receivedMessages.length &&
-                  chatStore.receivedMessages?.map(({ messageText, id, name, email, path }) => (
+                chatStore.receivedMessages.length
+                  ? chatStore.receivedMessages?.map(({ messageText, id, name, email, path }) => (
                     <Box
                       sx={user.email === email ? messageStylesForSender : messageStyleForRecipient}
                     >
@@ -111,6 +111,13 @@ const ChatPage = observer(() => {
                       </Paper>
                     </Box>
                   ))
+                  : (
+                    <Box className={styles.wrapper__noMessages}>
+                      <Paper className={styles.noMessages}>
+                        <Typography>Никто еще не отправил сообщение...</Typography>
+                      </Paper>
+                    </Box>
+                  )
             }
           </Box>
         </Scrollbars>

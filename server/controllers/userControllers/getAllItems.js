@@ -5,21 +5,21 @@ const getAllItems = async (request, reply) => {
   try {
     const { user } = request;
 
-    const [cart] = await db('carts')
-      .select('id')
-      .where({ user_id: user.id })
-      .limit(1);
+    const items = await db('items as i')
+      .innerJoin('carts as c', 'c.id', 'i.cart_id')
+      .innerJoin('groceires as g', 'g.id', 'i.groceires_id')
+      .innerJoin('files as f', 'f.id', 'g.file_id')
+      .where('c.user_id', user.id)
+      .select(['i.id', 'i.count', 'f.path', 'g.name', 'g.description', 'g.price']);
 
-    if (!cart) {
-      return reply
-        .code(404)
-        .send({ message: 'Не удалось найти корзину' });
-    }
-
-    const allItems = await db('groceires as g')
-      .select(['g.id', 'i.count', 'g.name', 'g.description', 'g.price'])
-      .innerJoin('items as i', 'g.id', 'i.groceires_id')
-      .where('i.cart_id', cart.id);
+    const allItems = items.map(item => ({
+      id: item.id,
+      count: item.count,
+      path: item.path,
+      name: item.name,
+      description: item.description,
+      price: item.price * item.count,
+    }));
 
     return reply.send(allItems);
   } catch (e) {

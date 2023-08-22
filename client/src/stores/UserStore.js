@@ -5,7 +5,7 @@ import {
   checkTokenAPI,
   confirmMailAPI,
   firstStepGoogleAuthAPI,
-  getAvatarAPI, getCountOfMessagesAPI,
+  getAvatarAPI, getCountOfMessagesAPI, getItemsAPI,
   getOneAPI,
   loginAPI,
   registerAPI
@@ -19,6 +19,7 @@ class UserStore {
     this._users = [];
     this._isAuth = false;
     this._path = null;
+    this._items = [];
 
     makeAutoObservable(this);
   }
@@ -37,6 +38,10 @@ class UserStore {
 
   setIsAuth(boolean) {
     this._isAuth = boolean;
+  }
+
+  setItem(item) {
+    this._items = [...this._items, item];
   }
 
   async register(registerData) {
@@ -141,6 +146,14 @@ class UserStore {
     this.setUsers(user);
   }
 
+  async getItems() {
+    try {
+      const items = await getItemsAPI();
+
+      this._items = items;
+    } catch (err) {}
+  }
+
   async getCountOfMessages() {
     try {
       const countMessages = await getCountOfMessagesAPI();
@@ -172,6 +185,10 @@ class UserStore {
 
   get users() {
     return this._users;
+  }
+
+  get items() {
+    return this._items;
   }
 }
 

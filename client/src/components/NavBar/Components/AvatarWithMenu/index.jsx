@@ -50,11 +50,6 @@ const AvatarWithMenu = ({ userStore, setAnchorEl, anchorEl, navigate }) => (
         Магазин
       </MenuItem>
       <MenuItem
-        onClick={() => handlerTo(CART_PAGE, setAnchorEl, navigate)}
-      >
-        Корзина
-      </MenuItem>
-      <MenuItem
         onClick={() => handlerLeave(setAnchorEl, userStore)}
       >
         Выйти

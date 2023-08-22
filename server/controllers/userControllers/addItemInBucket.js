@@ -19,7 +19,9 @@ const addItemInBucket = async (request, reply) => {
         .where({ id: item.id })
         .update({ count: (item.count += count) });
 
-      return reply.code(200);
+      return reply
+        .code(200)
+        .send();
     }
 
     const [cart] = await db('carts')
@@ -40,7 +42,9 @@ const addItemInBucket = async (request, reply) => {
         count,
       });
 
-    return reply.code(200);
+    return reply
+      .code(200)
+      .send();
   } catch (e) {
     logger.error(e.message);
 

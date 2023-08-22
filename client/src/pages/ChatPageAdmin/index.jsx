@@ -42,10 +42,6 @@ const ChatPageAdmin = observer(() => {
     fetchChats();
   }, [userStore.users.length]);
 
-  const handleSearch = () => {
-
-  }
-
   return (
     <Box className={styles.container}>
       <Box>

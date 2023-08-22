@@ -71,4 +71,10 @@ export const getCountOfMessagesAPI = async () => {
   const { data } = await $host.get('/user/getCountMessages');
 
   return data;
-}
+};
+
+export const getItemsAPI = async () => {
+  const { data } = await $host.get('/user/getItems');
+
+  return data;
+};

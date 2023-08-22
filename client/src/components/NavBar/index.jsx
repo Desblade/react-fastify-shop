@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { Box, Button, AppBar, Toolbar, Typography, ButtonGroup, Badge } from '@mui/material';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Context } from '../../index';
-import { ADMIN_PAGE, CHAT_PAGE, CHAT_PAGE_ADMIN, LOGIN_PAGE } from '../../utils/consts';
+import { ADMIN_PAGE, CART_PAGE, CHAT_PAGE_ADMIN, LOGIN_PAGE } from '../../utils/consts';
 import { AvatarWithMenu } from './Components/AvatarWithMenu';
 import styles from './index.module.scss';
 
 const MenuAppBar = observer(() => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [countOfMessages, setCountOfMessages] = useState(0);
   const { userStore, chatStore } = useContext(Context);
   const { chatId } = userStore.user;
   const navigate = useNavigate();
@@ -21,8 +21,6 @@ const MenuAppBar = observer(() => {
       try {
         await userStore.getAvatar();
         /*const data = await userStore.getCountOfMessages();*/
-
-        setCountOfMessages(data);
       } catch (e) {
         // Handle error
       }
@@ -33,7 +31,7 @@ const MenuAppBar = observer(() => {
     } else {
       userStore.setPath(pathLocalStorage);
     }
-  }, [userStore.path, chatStore.receivedMessages.length]);
+  }, [userStore.path]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -64,7 +62,7 @@ const MenuAppBar = observer(() => {
             )}
             {
               (userStore.isAuth && userStore.user.role !== 'admin') && (
-                <Badge badgeContent={countOfMessages} color={'success'}>
+                <Badge badgeContent={4} color={'success'}>
                   <ChatBubbleIcon
                     sx={{ cursor: 'pointer' }}
                     onClick={() => navigate(`/chatPageAdmin/chat/${chatId}`)}
@@ -73,12 +71,18 @@ const MenuAppBar = observer(() => {
               )
             }
             {userStore.isAuth ? (
-              <AvatarWithMenu
-                setAnchorEl={setAnchorEl}
-                anchorEl={anchorEl}
-                userStore={userStore}
-                navigate={navigate}
-              />
+              <Box sx={{ display: 'flex', alignItems: 'center'}}>
+                <ShoppingCartIcon
+                  onClick={() => navigate(CART_PAGE)}
+                  sx={{ margin: '10px', cursor: 'pointer' }}
+                />
+                <AvatarWithMenu
+                  setAnchorEl={setAnchorEl}
+                  anchorEl={anchorEl}
+                  userStore={userStore}
+                  navigate={navigate}
+                />
+              </Box>
             ) : (
               <Button
                 variant="contained"
