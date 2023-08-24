@@ -53,7 +53,7 @@ const CartPage = observer(() => {
                     </Box>
                     <Box className={styles.priceInfo__container}>
                       <Box className={styles.priceInfo}>
-                        <Typography className={styles.cart}>В коризине: { count }</Typography>
+                        <Typography className={styles.cart}>В корзине: { count }</Typography>
                         <Box className={styles.costButton}>
                           <Typography className={styles.cost}>${ price }</Typography>
                           <Button

@@ -25,32 +25,32 @@
         padding: 15px;
         background: #007aff;
         color: white;
-        border-radius: 15px;
+        border-radius: 1rem;
       }
     }
 
     .messages {
       display: flex;
       flex-direction: column;
-      padding: 15px;
-      gap: 15px;
+      padding: 1rem;
+      gap: 1rem;
 
       .message {
         width: 40%;
-        padding: 15px;
+        padding: 1rem;
         background: #007aff;
         color: white;
-        border-radius: 15px;
+        border-radius: 1rem;
 
         .message__text {
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 1.2rem;
 
           .message__avatar {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.8rem;
           }
         }
       }

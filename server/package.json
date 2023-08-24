@@ -29,6 +29,7 @@
     "nodemailer": "^6.9.4",
     "pg": "^8.11.2",
     "query-string": "^8.1.0",
+    "stripe": "^13.3.0",
     "winston": "^3.10.0"
   },
   "devDependencies": {

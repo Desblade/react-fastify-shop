@@ -19,7 +19,7 @@ const loginUserController = async (request, reply) => {
         .send({ message: 'Неверный логин или пароль' });
     }
 
-    const isValidPassword = bcrypt.compare(password, user.password);
+    const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
       return reply
