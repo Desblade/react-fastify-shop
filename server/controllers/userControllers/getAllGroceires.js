@@ -6,6 +6,7 @@ const { convertPriceItems } = require('../../utils/convertPriceItems');
 const getAllGroceires = async (request, reply) => {
   try {
     let course = global.cache.get('course');
+    const timeLifeCache = process.env.TIME_LIFE_CACHE;
     const allGroceires = await db('groceires as g')
       .innerJoin('files as f', 'g.file_id', 'f.id')
       .select(['f.path', 'g.id', 'g.name', 'g.description', 'g.price']);
@@ -17,7 +18,7 @@ const getAllGroceires = async (request, reply) => {
         },
       } = await axios.get(process.env.API_CURRENCY_CONVERT_URL);
 
-      global.cache.set('course', RUB);
+      global.cache.set('course', RUB, timeLifeCache);
 
       course = RUB;
     }

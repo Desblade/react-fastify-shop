@@ -6,6 +6,7 @@ const { db } = require('../../db');
 const confirmMailController = async (request, reply) => {
   try {
     const { email } = request.body;
+    const timeLifeCache = process.env.TIME_LIFE_CACHE;
 
     if (!email) {
       return reply
@@ -25,7 +26,7 @@ const confirmMailController = async (request, reply) => {
     }
 
     const confirmCode = await generateConfirmationCode();
-    global.cache.set(email, confirmCode, process.env.TIMELIFECACHE);
+    global.cache.set(email, confirmCode, timeLifeCache);
 
     const { transporter, mailOptions } = await createNodemailerConfig(email, confirmCode);
     await transporter.sendMail(mailOptions);
