@@ -39,6 +39,13 @@ const CardItem = observer(({ id, path, name, description, price }) => {
         </Box>
         <Box className={styles.cardFooter}>
           <Typography color="green">${price}</Typography>
+          {
+            userStore.user.role === 'admin' && (
+              <Button disabled>
+                <Typography>ID: {id}</Typography>
+              </Button>
+            )
+          }
           <Button
             disabled={!userStore.isAuth}
             onClick={() => setOpen(true)}

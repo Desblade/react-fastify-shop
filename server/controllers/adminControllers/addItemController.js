@@ -8,7 +8,7 @@ const addItemController = async (request, reply) => {
     const serverUrl = process.env.SERVER_URL;
     const path = `${serverUrl}/uploads/itemsImages/${filename}`;
 
-    const groceier = await db.transaction(async (trx) => {
+    await db.transaction(async (trx) => {
       const [file] = await trx('files')
         .insert({
           filename,
@@ -18,19 +18,16 @@ const addItemController = async (request, reply) => {
         })
         .returning('id');
 
-      const [groceier] = await trx('groceires')
+      await trx('groceires')
         .insert({
           file_id: file.id,
           name,
           description,
           price,
-        })
-        .returning(['file_id', 'name', 'description', 'price']);
-
-      return groceier;
+        });
     });
 
-    return reply.send({ groceier, message: 'Товар успешно добавлен' });
+    return reply.send({ message: 'Товар успешно добавлен' });
   } catch (e) {
     logger.error(e.message);
 

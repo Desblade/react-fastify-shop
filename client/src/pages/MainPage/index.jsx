@@ -43,9 +43,9 @@ const MainPage = observer(() => {
     <Box className={styles.container}>
       {
         isLoading &&
-        <div className={styles.containerLoader}>
-          <CircularProgress color={'success'} />
-        </div>
+          <div className={styles.containerLoader}>
+            <CircularProgress color={'success'} />
+          </div>
       }
       { !isLoading && <CardList /> }
     </Box>

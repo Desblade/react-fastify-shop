@@ -5,19 +5,19 @@ import {
   FormControl,
   OutlinedInput,
   InputLabel,
-  InputAdornment,
+  InputAdornment, CircularProgress
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import { Context } from '../../../../index';
 import styles from './index.module.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AddItem = ({ setOpen }) => {
+const AddItem = ({ setOpen, isLoading, setIsLoading }) => {
   const [values, setValues] = useState({
     name: '',
     description: '',
     price: '',
-    fileInput: undefined,
+    fileInput: null,
   });
   const { adminStore } = useContext(Context);
 
@@ -30,8 +30,9 @@ const AddItem = ({ setOpen }) => {
   };
 
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
-    setOpen(false);
+
     try {
       const formData = new FormData();
       formData.append('file', values.fileInput);
@@ -40,47 +41,59 @@ const AddItem = ({ setOpen }) => {
       formData.append('price', values.price);
 
       const message = await adminStore.addGroceier(formData);
-
       toast(message);
     } catch (err) {
-      toast(err.e);
+      toast.error(err.e);
+    } finally {
+      setIsLoading(false);
+      setOpen(false);
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit} className={styles.container}>
-      <TextField
-        value={values.name}
-        onChange={handleChange('name')}
-        sx={{ width: '50%' }}
-        placeholder="Название товара"
-        label="Название"
-      />
-      <TextField
-        multiline
-        maxRows={11}
-        value={values.description}
-        onChange={handleChange('description')}
-        sx={{ width: '50%' }}
-        placeholder="Описание товара"
-        label="Описание"
-      />
-      <FormControl sx={{ width: '50%' }}>
-        <InputLabel htmlFor="outlined-adornment-amount">Цена</InputLabel>
-        <OutlinedInput
-          value={values.price}
-          onChange={handleChange('price')}
-          type="number"
-          id="outlined-adornment-amount"
-          startAdornment={<InputAdornment position="start">₽</InputAdornment>}
-          placeholder="Цена товара"
-          label="Цена"
+  return isLoading
+    ? (
+      <div className={styles.containerLoader}>
+        <CircularProgress color={'success'} />
+      </div>
+    )
+    : (
+      <form
+        onSubmit={handleSubmit}
+        className={styles.container}
+      >
+
+        <TextField
+          value={values.name}
+          onChange={handleChange('name')}
+          sx={{ width: '50%' }}
+          placeholder="Название товара"
+          label="Название"
         />
-      </FormControl>
-      <TextField onChange={handleChange('fileInput')} type="file" />
-      <Button type="submit">Добавить</Button>
-    </form>
-  );
+        <TextField
+          multiline
+          maxRows={11}
+          value={values.description}
+          onChange={handleChange('description')}
+          sx={{ width: '50%' }}
+          placeholder="Описание товара"
+          label="Описание"
+        />
+        <FormControl sx={{ width: '50%' }}>
+          <InputLabel htmlFor="outlined-adornment-amount">Цена</InputLabel>
+          <OutlinedInput
+            value={values.price}
+            onChange={handleChange('price')}
+            type="number"
+            id="outlined-adornment-amount"
+            startAdornment={<InputAdornment position="start">₽</InputAdornment>}
+            placeholder="Цена товара"
+            label="Цена"
+          />
+        </FormControl>
+        <TextField onChange={handleChange('fileInput')} type="file" />
+        <Button type="submit">Добавить</Button>
+      </form>
+    )
 };
 
 export {

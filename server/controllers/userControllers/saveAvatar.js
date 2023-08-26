@@ -20,13 +20,11 @@ const saveAvatar = async (request, reply) => {
       // удаление фото с бэка
       const pathToAvatar = `uploads/usersAvatars/${userAvatar.filename}`;
 
-      fs.unlink(pathToAvatar, (err) => {
+      await fs.unlink(pathToAvatar, (err) => {
         if (err) {
           logger.error(err.message);
 
-          return reply
-            .code(500)
-            .send({ message: 'Не удалось сохранить аватар' });
+          throw new Error(err.message);
         } else {
           logger.info('Фото успешно удалено');
         }

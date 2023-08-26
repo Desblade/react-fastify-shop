@@ -42,7 +42,9 @@ const CartPage = observer(() => {
                         sx={{
                           width: '40%',
                           height: '100%',
-                          backgroundSize: 'cover',
+                          backgroundSize: 'contain',
+                          backgroundRepeat: 'no-repeat',
+                          backgroundPosition: 'center',
                           backgroundImage: `url(${path})`,
                         }}
                       ></Paper>

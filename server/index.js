@@ -17,7 +17,7 @@ const port = process.env.PORT || 5300;
 const middlewaresOptions = [
   {
     origin: 'http://localhost:3000',
-    methods: ['POST', 'GET', 'PUT', 'UPDATE', 'DELETE'],
+    methods: ['POST', 'GET', 'PUT', 'PATCH', 'UPDATE', 'DELETE'],
   },
   {
     root: path.join(__dirname, 'uploads'),

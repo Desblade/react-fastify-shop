@@ -11,10 +11,10 @@ const adminRouter = async (instance) => {
   instance
     .addHook('preHandler', checkUserToken, checkAdminRole)
     .register(multipart)
-    .post('/', { preHandler: [upload.single('file')] }, addItemController)
-    .get('/', getAllChats)
-    .patch('/', updateItemController)
-    .delete('/', deleteItemController);
+    .post('', { preHandler: [upload.single('file')] }, addItemController)
+    .get('', getAllChats)
+    .patch('', { preHandler: [upload.single('file')] }, updateItemController)
+    .delete('', deleteItemController);
 };
 
 module.exports = adminRouter;

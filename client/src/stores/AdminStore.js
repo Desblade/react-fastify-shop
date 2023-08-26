@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { addGroceierAPI, getChatsAPI } from '../utils/http/adminAPI';
+import { addGroceierAPI, deleteGroceierAPI, updateGroceierAPI } from '../utils/http/adminAPI';
 import { getGroceiresAPI } from '../utils/http/userAPI';
 
 // bad decomposition, refactor later (another god's object)
@@ -10,16 +10,21 @@ class AdminStore {
     makeAutoObservable(this);
   }
 
-  setGroceier(groceier) {
-    this._groceires = [...this._groceires, groceier];
-  }
-
   async addGroceier(groceierData) {
     try {
-      const data = await addGroceierAPI(groceierData);
-      this.setGroceier(data.groceier);
+      const message = await addGroceierAPI(groceierData);
 
-      return data.message;
+      return message;
+    } catch (err) {
+      throw { e: err.response.data.message };
+    }
+  }
+
+  async updateGroceier(formData, id) {
+    try {
+      const message = await updateGroceierAPI(formData, id);
+
+      return message;
     } catch (err) {
       throw { e: err.response.data.message };
     }
@@ -28,6 +33,16 @@ class AdminStore {
   async getGroceires() {
     try {
       this._groceires = await getGroceiresAPI();
+    } catch (err) {
+      throw { e: err.response.data.message };
+    }
+  }
+
+  async deleteGroceier(id) {
+    try {
+      const message = await deleteGroceierAPI(id);
+
+      return message;
     } catch (err) {
       throw { e: err.response.data.message };
     }

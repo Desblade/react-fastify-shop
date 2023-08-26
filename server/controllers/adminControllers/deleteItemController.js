@@ -1,22 +1,39 @@
+const fs = require('fs');
 const { logger } = require('../../logger');
 const { db } = require('../../db');
 
 const deleteItemController = async (request, reply) => {
   try {
     const { id } = request.query;
-    const { user } = request;
 
-    if (user.role !== 'admin') {
+    const [groceier] = await db('groceires as g')
+      .innerJoin('files as f', 'f.id', 'g.file_id')
+      .select(['f.filename'])
+      .where('g.id', id)
+      .limit(1);
+
+    if (!groceier) {
       return reply
-        .code(400)
-        .send({ message: 'Вы не являетесь администратором' });
+        .code(404)
+        .send({ message: 'Товар с таким ID не найден' });
     }
 
     await db('groceires')
       .where({ id })
       .delete();
 
-    return reply.code(200);
+    const pathToFile = `uploads/itemsImages/${groceier.filename}`;
+
+    await fs.unlink(pathToFile, (err) => {
+      if (err) {
+        logger.error(err.message);
+
+        throw new Error(err.message);
+      }
+      logger.info('Товар успешно удален с бэкэнда');
+    });
+
+    return reply.send({ message: `Товар под ID: ${id} успешно удален` });
   } catch (e) {
     logger.error(e.message);
 

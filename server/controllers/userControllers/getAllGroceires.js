@@ -11,6 +11,12 @@ const getAllGroceires = async (request, reply) => {
       .innerJoin('files as f', 'g.file_id', 'f.id')
       .select(['f.path', 'g.id', 'g.name', 'g.description', 'g.price']);
 
+    if (!allGroceires.length) {
+      return reply
+        .code(404)
+        .send({ message: 'Не удалось найти товары' });
+    }
+
     if (!course) {
       const {
         data: {
@@ -24,12 +30,6 @@ const getAllGroceires = async (request, reply) => {
     }
 
     const convertedAllGroceires = await convertPriceItems(allGroceires, course);
-
-    if (!allGroceires.length) {
-      return reply
-        .code(404)
-        .send({ message: 'Не удалось найти товары' });
-    }
 
     return reply.send(convertedAllGroceires);
   } catch (e) {
